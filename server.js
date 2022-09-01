@@ -10,6 +10,7 @@ const app = express();
 // connect to mongodb and then listening on port 3000
 const dbURI =
   "mongodb+srv://panosfan:test1234@cluster0.splzwzk.mongodb.net/blogExpressApp?retryWrites=true&w=majority";
+
 mongoose
   .connect(dbURI)
   .then(() => {
@@ -25,8 +26,11 @@ app.set("view engine", "ejs"); //default folder: views
 // custom made middleware
 app.use((req, res, next) => {
   console.log("new request");
-  next(); //an den balo next(), den proxoraei
+  next(); //an den balo next(), den proxoraei kai kollaei o browser se endless loading
 });
+
+// middleware oste na pernei ta values apo create.ejs oste na mporo na ta soso sti basi
+app.use(express.urlencoded({ extended: true })); //form data
 
 // middleware gia reporting
 app.use(morgan("dev"));
@@ -39,7 +43,7 @@ app.get("/", (req, res) => {
   // res.send("<p>test</p>");
   // res.sendFile("./views/index", { root: __dirname }); thelei to object giati to proto argument prepei na einai abs path
   //to parapano einai gia xrisi html, oxi template engine
-  res.redirect("/blogs");
+  res.redirect("/blogs"); //redirect se allo link
 });
 
 app.get("/about", (req, res) => {
@@ -53,31 +57,22 @@ app.get("/blogs", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+app.get("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id).then((result) =>
+    res.render("details", { title: result.title, blog: result })
+  );
+});
+
+app.post("/blogs", (req, res) => {
+  console.log(req.body);
+  Blog.create(req.body)
+    .then(() => res.redirect("/blogs"))
+    .catch((err) => console.log(err));
+});
+
 app.get("/create", (req, res) => {
   res.render("create", { title: "Create" });
-});
-
-app.get("/blog/create", (req, res) => {
-  // const blog = new Blog({
-  //   title: "new blog",
-  //   snippet: "snippet",
-  //   body: "body of my new blog",
-  // });
-  // blog
-  //   .save()
-  //   .then((result) => res.send(result))
-  //   .catch((err) => console.log(err));
-  // opos akribos laravel models, mporo eite new Blog, eite na to kano amesos
-  Blog.create({
-    title: "new test",
-    snippet: "snip",
-    body: "body",
-  }).then((result) => res.send(result));
-});
-
-// redirect
-app.get("/about-me", (req, res) => {
-  res.redirect("/about");
 });
 
 // app.use trexei panta, opote gia middleware. Ara sto telos gia to 404 giati tha stamatisei ekei to res
@@ -85,3 +80,22 @@ app.use(
   (req, res) => res.status(404).render("error", { title: 404 })
   // res.sendStatus(404) an thelo na steilo diko mou status, xoris chaining
 );
+
+// allos tropos na kano save sti basi
+// app.post("/blog/create", (req, res) => {
+// const blog = new Blog({
+//   title: "new blog",
+//   snippet: "snippet",
+//   body: "body of my new blog",
+// });
+// blog
+//   .save()
+//   .then((result) => res.send(result))
+//   .catch((err) => console.log(err));
+// opos akribos laravel models, mporo eite new Blog, eite na to kano amesos
+//   Blog.create({
+//     title: "new test",
+//     snippet: "snip",
+//     body: "body",
+//   }).then((result) => res.send(result));
+// });
