@@ -47,6 +47,7 @@ app.get("/about", (req, res) => {
 
 app.get("/blogs", (req, res) => {
   Blog.find()
+    .sort({ createdAt: -1 })
     .then((result) => res.send(result))
     .catch((err) => console.log(err));
 });
