@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const Blog = require("./models/blog");
+const res = require("express/lib/response");
 
 // express app
 const app = express();
@@ -38,7 +39,7 @@ app.get("/", (req, res) => {
   // res.send("<p>test</p>");
   // res.sendFile("./views/index", { root: __dirname }); thelei to object giati to proto argument prepei na einai abs path
   //to parapano einai gia xrisi html, oxi template engine
-  res.render("index", { title: "home" });
+  res.redirect("/blogs");
 });
 
 app.get("/about", (req, res) => {
@@ -48,8 +49,12 @@ app.get("/about", (req, res) => {
 app.get("/blogs", (req, res) => {
   Blog.find()
     .sort({ createdAt: -1 })
-    .then((result) => res.send(result))
+    .then((result) => res.render("index", { title: "home", blogs: result }))
     .catch((err) => console.log(err));
+});
+
+app.get("/create", (req, res) => {
+  res.render("create", { title: "Create" });
 });
 
 app.get("/blog/create", (req, res) => {
