@@ -37,7 +37,6 @@ const blog_delete = (req, res) => {
 
 const blog_put = (req, res) => {
   const id = req.params.id;
-  console.log(req.body);
   Blog.findByIdAndUpdate(id, req.body)
     .then(res.json({ redirect: "/blogs" }))
     .catch((err) => console.log(err));
