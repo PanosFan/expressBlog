@@ -5,15 +5,17 @@
   <body>
     <%- include('./partials/nav') %>
     <h1>home page</h1>
+    <div class="blogs">
+      <%blogs.forEach((blog) => { %>
 
-    <%blogs.forEach((blog) => { %>
-
-      <a href="/blogs/<%= blog._id %> ">
-        <h2><%=blog.title%></h2>
-      </a>
-      <p><%= blog.body %></p>
-    <%})%>
-
+      <div class="blog">
+        <a href="/blogs/<%= blog._id %> ">
+          <h2><%=blog.title%></h2>
+        </a>
+        <p><%= blog.body %></p>
+      </div>
+      <%})%>
+    </div>
     <%- include('./partials/footer') %>
   </body>
 </html>
