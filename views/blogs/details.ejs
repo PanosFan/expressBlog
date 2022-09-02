@@ -5,9 +5,16 @@
     <%- include('../partials/nav') %>
     <h2><%= blog.title %></h2>
     <p><%= blog.body %></p>
-    <a class="delete" data-doc="<%= blog._id %>">DELETE</a>
+    <a class="delete" data-doc="<%= blog._id %>">Delete</a>
+    <a class="update" data-doc="<%= blog._id %>">Update</a>
     <%- include('../partials/footer') %>
-
+    <form action="/blogs" id="updateForm" style="opacity: 0">
+      <label for="title">Title</label>
+      <input type="text" name="title" class="title" />
+      <label for="body">Body</label>
+      <input type="text" name="body" class="body" />
+      <input type="button" value="Submit" id="submitUpdateBtn" />
+    </form>
     <script>
       const deleteBtn = document.querySelector("a.delete");
       deleteBtn.onclick = () => {
@@ -19,6 +26,28 @@
               .then((data) => (window.location.href = data.redirect))
           )
           .catch((err) => console.log(err));
+      };
+      const form = document.querySelector("#updateForm");
+      const updateBtn = document.querySelector("a.update");
+      let submitUpdateBtn = document.querySelector("#submitUpdateBtn");
+
+      updateBtn.onclick = () => {
+        form.style.opacity = 1;
+      };
+      submitUpdateBtn.onclick = () => {
+        let title = document.querySelector(".title").value;
+        let body = document.querySelector(".body").value;
+        let input = { title, body };
+        const endPoint = `/blogs/${updateBtn.dataset.doc}`;
+        fetch(endPoint, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(input),
+        }).then((response) =>
+          response.json().then((data) => (window.location.href = data.redirect))
+        );
       };
     </script>
   </body>

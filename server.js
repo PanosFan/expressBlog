@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const blogRoutes = require("./routes/blogRoutes");
+const bodyParser = require("body-parser");
 
 // express app
 const app = express();
@@ -29,7 +30,8 @@ app.use((req, res, next) => {
 });
 
 // middleware oste na pernei ta values apo create.ejs oste na mporo na ta soso sti basi
-app.use(express.urlencoded({ extended: true })); //form data
+app.use(express.urlencoded({ extended: true })); // form data
+app.use(bodyParser.json()); // json parse apo to fetch body
 
 // middleware gia reporting
 app.use(morgan("dev"));
