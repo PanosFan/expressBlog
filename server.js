@@ -1,8 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const Blog = require("./models/blog");
-const res = require("express/lib/response");
+const blogRoutes = require("./routes/blogRoutes");
 
 // express app
 const app = express();
@@ -50,37 +49,8 @@ app.get("/about", (req, res) => {
   res.render("about", { title: "about" }); //gia xrisi me ejs (about.ejs mesa sto views folder) || this 2i param, pernao value sto view
 });
 
-app.get("/blogs", (req, res) => {
-  Blog.find()
-    .sort({ createdAt: -1 })
-    .then((result) => res.render("index", { title: "home", blogs: result }))
-    .catch((err) => console.log(err));
-});
-
-app.get("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  Blog.findById(id).then((result) =>
-    res.render("details", { title: result.title, blog: result })
-  );
-});
-
-app.delete("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  Blog.findByIdAndDelete(id)
-    .then(res.json({ redirect: "/blogs" }))
-    .catch((err) => console.log(err));
-});
-
-app.post("/blogs", (req, res) => {
-  console.log(req.body);
-  Blog.create(req.body)
-    .then(() => res.redirect("/blogs"))
-    .catch((err) => console.log(err));
-});
-
-app.get("/create", (req, res) => {
-  res.render("create", { title: "Create" });
-});
+// blog routes
+app.use("/blogs", blogRoutes);
 
 // app.use trexei panta, opote gia middleware. Ara sto telos gia to 404 giati tha stamatisei ekei to res
 app.use(
