@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const blogRoutes = require("./routes/blogRoutes");
-require("dotenv/config");
+require("dotenv/config"); //to be able to use process.env.kati gia na krupso to link tis basis mesa sto .env arxeio
 
 // express app
 const app = express();
