@@ -2,16 +2,15 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const blogRoutes = require("./routes/blogRoutes");
+require("dotenv/config");
 
 // express app
 const app = express();
 
 // connect to mongodb and then listening on port 3000
-const dbURI =
-  "mongodb+srv://panosfan:test1234@cluster0.splzwzk.mongodb.net/blogExpressApp?retryWrites=true&w=majority";
 
 mongoose
-  .connect(dbURI)
+  .connect(process.env.DB_CONN)
   .then(() => {
     console.log("connected to db");
     app.listen(3000);

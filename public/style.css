@@ -19,13 +19,13 @@ nav ul {
 
 a {
   color: blue;
+  cursor: pointer;
 }
 
 .blogs {
   display: flex;
   flex-direction: column;
   gap: 3em;
-  margin-bottom: 5em;
   margin-top: 3em;
 }
 
@@ -57,5 +57,6 @@ a {
 }
 
 footer {
+  margin-top: 7em;
   text-align: center;
 }
