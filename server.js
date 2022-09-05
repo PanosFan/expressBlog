@@ -8,7 +8,6 @@ require("dotenv/config"); //to be able to use process.env.kati gia na krupso to 
 const app = express();
 
 // connect to mongodb and then listening on port 3000
-
 mongoose
   .connect(process.env.DB_CONN)
   .then(() => {

@@ -1,4 +1,3 @@
-console.log("batchest");
 const deleteBtn = document.querySelector("a.delete");
 deleteBtn.onclick = () => {
   const endPoint = `/blogs/${deleteBtn.dataset.doc}`;
